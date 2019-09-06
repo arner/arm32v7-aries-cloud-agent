@@ -1,7 +1,4 @@
 FROM arm32v7/ubuntu:18.04 as build
-
-ENV PYTHONUNBUFFERED 0
-
 ARG uid=1000
 
 RUN apt-get update \
@@ -36,8 +33,11 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/home/indy/indy-sdk/libindy/target/release
 
 RUN pip3 install --user aries-cloudagent indy-sdk
 
+
+
 FROM arm32v7/ubuntu:18.04 as aca-image
 ARG uid=1000
+ENV PYTHONUNBUFFERED 0
 
 RUN apt-get update \
  && apt-get install -qq \

@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  agent:
+    build: agent
+    container_name: agent
+    ports:
+      - '8080:8080'
+      - '8000:8000'
+    command: start -it http 0.0.0.0 8000 -ot http --admin 0.0.0.0 8080 --admin-insecure-mode --genesis-url http://dev.greenlight.bcovrin.vonx.io/genesis
+
+  postgres:
+    image: arm32v7/postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - '5432:5432'
+
+  demo:
+    build: demo
+    container_name: demo
+    environment:
+      - LOG_LEVEL=debug
+      - DEFAULT_POSTGRES=true
+      - LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io
+      - GENESIS_URL=http://dev.greenlight.bcovrin.vonx.io/genesis
+    ports:
+      - '8080:8080'
+      - '8000:8000'
+      - '8020:8020'
+    command: -m runners.faber --port 8020

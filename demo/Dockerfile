@@ -1,4 +1,4 @@
-FROM agent
+FROM arm32v7-aries-cloud-agent_agent
 
 USER root
 RUN apt-get update \
